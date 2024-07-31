@@ -15,7 +15,7 @@ jobs:
     env:
       S3_BUCKET_NAME: resume-api-lambda
       LAMBDA_CODE_FILE: resume-lambda-code.zip
-      LAMBDA_CODE_PATH: api/resume-lambda-code.py
+      #LAMBDA_CODE_PATH: api/resume-lambda-code.py
 
     steps:
       - name: Checkout repository
@@ -26,7 +26,7 @@ jobs:
 
       - name: Zip Lambda code
         run: |
-          zip -r $LAMBDA_CODE_FILE $LAMBDA_CODE_PATH
+          zip -r $LAMBDA_CODE_FILE . -i api/resume-lambda-code.py
 
       - name: Upload Lambda code to S3
         run: |
