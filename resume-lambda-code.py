@@ -22,7 +22,7 @@ def lambda_handler(event, context):
     logger.info(f"Request ID: {request_id}, Function: {function_name}, Fetching data for user_id: {user_id}")
 
     try:
-        # Fetch the item from DynamoDB
+        # Fetch item from DynamoDB
         response = dynamodb.get_item(
             TableName=table_name,
             Key={
