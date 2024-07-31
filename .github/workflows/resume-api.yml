@@ -9,7 +9,7 @@ on:
 
 env:
   S3_BUCKET_NAME: resume-api-lambda
-  LAMBDA: resume-function
+  LAMBDA: resume_function
 
 jobs:
 
@@ -46,11 +46,11 @@ jobs:
 
       - name: Zip Lambda code
         run: |
-          zip -r ${{ env.LAMBDA }}${{ steps.version.output.version }}.zip api/resume-lambda-code.py
+          zip -r ${{ env.LAMBDA }}-${{ steps.version.outputs.version }}.zip api/resume-lambda-code.py
 
       - name: Upload Lambda code to S3
         run: |
-          aws s3 cp ${{ env.LAMBDA }}${{ steps.version.output.version }}.zip s3://${{ env.S3_BUCKET_NAME }}/${{ env.LAMBDA }}${{ steps.version.output.version }}.zip
+          aws s3 cp ${{ env.LAMBDA }}-${{ steps.version.outputs.version }}.zip s3://${{ env.S3_BUCKET_NAME }}/${{ env.LAMBDA }}-${{ steps.version.outputs.version }}.zip
         
 
   deploy:
@@ -68,4 +68,4 @@ jobs:
 
       - name: Update Lambda function code
         run: |
-          aws lambda update-function-code --function-name ${{ env.LAMBDA }}${{ steps.version.output.version }} --s3-bucket ${{ env.S3_BUCKET_NAME }} --s3-key ${{ env.LAMBDA }}.${{ needs.package.output.version }}.zip
+          aws lambda update-function-code --function-name ${{ env.LAMBDA }}-${{ steps.version.outputs.version }} --s3-bucket ${{ env.S3_BUCKET_NAME }} --s3-key ${{ env.LAMBDA }}-${{ needs.package.outputs.version }}.zip
