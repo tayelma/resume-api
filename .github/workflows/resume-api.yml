@@ -7,21 +7,25 @@ on:
     types:
       - closed
 
+env:
+  S3_BUCKET_NAME: resume-api-lambda
+  LAMBDA: resume-lambda-code
+
 jobs:
   package:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
-    env:
-      S3_BUCKET_NAME: resume-api-lambda
-      LAMBDA: resume-lambda-code
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: List directory contents
-        run: ls -la # Debugging step
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
       - name: Zip Lambda code
         run: |
@@ -39,11 +43,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [package]
-
-    env:
-      S3_BUCKET_NAME: resume-api-lambda
-      LAMBDA_CODE_FILE: resume-lambda-code.zip
-      LAMBDA_FUNCTION_NAME: resume_function
 
     steps:
       - name: Set up AWS CLI
