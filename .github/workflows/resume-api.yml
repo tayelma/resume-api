@@ -68,4 +68,4 @@ jobs:
 
       - name: Update Lambda function code
         run: |
-          aws lambda update-function-code --function-name ${{ env.LAMBDA }}-${{ steps.version.outputs.version }} --s3-bucket ${{ env.S3_BUCKET_NAME }} --s3-key ${{ env.LAMBDA }}-${{ needs.package.outputs.version }}.zip
+          aws lambda update-function-code --function-name ${{ env.LAMBDA }} --s3-bucket ${{ env.S3_BUCKET_NAME }} --s3-key ${{ env.LAMBDA }}-${{ needs.package.outputs.version }}.zip
