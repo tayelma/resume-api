@@ -25,4 +25,4 @@ jobs:
         run: |
           aws lambda update-function-code \
             --function-name resume_function \
-            --zip-file resume-lambda-code.zip
+            --zip-file fileb://resume-lambda-code.zip
