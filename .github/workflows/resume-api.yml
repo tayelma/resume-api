@@ -1,4 +1,4 @@
-name: Deploy to AWS
+name: Deploy Lambda Function
 
 on:
   push:
@@ -23,21 +23,12 @@ jobs:
             echo "changes_detected=false" >> $GITHUB_ENV
           fi
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.6.4
-
-      - name: Terraform Init
+      - name: Deploy Lambda Function
         if: env.changes_detected == 'true'
-        run: terraform init
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Terraform Apply
-        if: env.changes_detected == 'true'
-        run: terraform apply -auto-approve
+        run: |
+          aws lambda update-function-code \
+            --function-name <YOUR_LAMBDA_FUNCTION_NAME> \
+            --zip-file fileb://resume-lambda-code.zip
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
