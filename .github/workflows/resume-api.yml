@@ -14,8 +14,7 @@ jobs:
 
     env:
       S3_BUCKET_NAME: resume-api-lambda
-      LAMBDA_CODE_FILE: resume-lambda-code.zip
-      #LAMBDA_CODE_PATH: api/resume-lambda-code.py
+      LAMBDA: resume-lambda-code.zip
 
     steps:
       - name: Checkout repository
@@ -26,11 +25,11 @@ jobs:
 
       - name: Zip Lambda code
         run: |
-          zip -r $LAMBDA_CODE_FILE . -i api/resume-lambda-code.py
+          zip -r ${{ env.LAMBDA }}.zip api/resume-lambda-code.py
 
       - name: Upload Lambda code to S3
         run: |
-          aws s3 cp $LAMBDA_CODE_FILE s3://$S3_BUCKET_NAME/$LAMBDA_CODE_FILE
+          aws s3 cp ${{ env.LAMBDA }}.zip s3://${{ env.S3_BUCKET_NAME }}/${{ env.LAMBDA }}.zip
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -54,12 +53,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Download Lambda code from S3
-        run: |
-          aws s3 cp s3://$S3_BUCKET_NAME/$LAMBDA_CODE_FILE $LAMBDA_CODE_FILE
-
       - name: Update Lambda function code
         run: |
           aws lambda update-function-code \
-            --function-name $LAMBDA_FUNCTION_NAME \
-            --zip-file fileb://$LAMBDA_CODE_FILE
+            --function-name ${{ env.LAMBDA }} \
+            --s3-bucket ${{ env.S3_BUCKET_NAME }} --s3-key ${{ env.LAMBDA }}.zip
