@@ -14,7 +14,7 @@ jobs:
 
     env:
       S3_BUCKET_NAME: resume-api-lambda
-      LAMBDA: resume-lambda-code.zip
+      LAMBDA: resume-lambda-code
 
     steps:
       - name: Checkout repository
