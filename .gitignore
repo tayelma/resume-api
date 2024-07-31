@@ -7,3 +7,10 @@ terraform-provider-aws_v5.59.0_x5.exe
 
 # Ignore file
 resume.json
+
+# Ignore local .env files
+.env
+
+# AWS credentials
+*.pem
+
