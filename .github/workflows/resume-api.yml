@@ -13,18 +13,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Check for changes in Lambda function
+        id: check_changes
+        run: |
+          # Check if the Lambda function file has changed
+          if git diff --name-only HEAD~1 | grep -q 'resume-lambda-code.py'; then
+            echo "changes_detected=true" >> $GITHUB_ENV
+          else
+            echo "changes_detected=false" >> $GITHUB_ENV
+          fi
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.6.4
 
       - name: Terraform Init
+        if: env.changes_detected == 'true'
         run: terraform init
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Apply
+        if: env.changes_detected == 'true'
         run: terraform apply -auto-approve
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
