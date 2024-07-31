@@ -18,7 +18,7 @@ jobs:
 
       - name: Zip Lambda code
         run: |
-          zip -r resume-lambda-code.zip C:\Users\thelm\Desktop\me\AWS Projects\AWS Cloud Resume-Json\api\resume-lambda-code.py
+          zip -r resume-lambda-code.zip ../../api/resume-lambda-code.py
 
       - name: Upload Lambda code to S3
         run: |
