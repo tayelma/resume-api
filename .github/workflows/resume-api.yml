@@ -9,7 +9,7 @@ on:
 
 env:
   S3_BUCKET_NAME: resume-api-lambda
-  LAMBDA: resume-lambda
+  LAMBDA: resume-function
 
 jobs:
 
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     
     outputs:
-      version: ${{steps.version.outputs.tag}}
+      version: ${{steps.version.outputs.version}}
 
     steps:
       - name: Checkout repository
