@@ -52,10 +52,6 @@ PS: I faced some issues with my initial code hence had to hardcode the id becaus
   3. **Upload to S3**: Uploads the zipped code to an S3 bucket.
   4. **Deploy Lambda Function**: Updates the Lambda function code from the S3 bucket.
 
-### Architecture Diagram
-
-![alt text](image.png)
-
 
 
 
