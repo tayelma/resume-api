@@ -1,9 +1,10 @@
-name: Deploy to AWS
+name: Deploy Lambda Function
 
 on:
   push:
-    branches:
-      - main  # Trigger on push to the main branch
+    paths:
+      - 'resume-lambda-code.py'
+      - 'resume-lambda-code.zip'
 
 jobs:
   deploy:
@@ -13,31 +14,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Check for changes in Lambda function
-        id: check_changes
-        run: |
-          # Check if the Lambda function file has changed
-          if git diff --name-only HEAD~1 | grep -q 'resume-lambda-code.py'; then
-            echo "changes_detected=true" >> $GITHUB_ENV
-          else
-            echo "changes_detected=false" >> $GITHUB_ENV
-          fi
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          terraform_version: 1.6.4
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      - name: Terraform Init
-        if: env.changes_detected == 'true'
-        run: terraform init
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Terraform Apply
-        if: env.changes_detected == 'true'
-        run: terraform apply -auto-approve
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Update Lambda function code
+        run: |
+          aws lambda update-function-code \
+            --function-name resume_function \
+            --zip-file resume-lambda-code.zip
