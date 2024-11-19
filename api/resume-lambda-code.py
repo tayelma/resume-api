@@ -13,7 +13,7 @@ dynamodb = boto3.client('dynamodb', region_name=os.environ.get('AWS_REGION', 'us
 
 def lambda_handler(event, context):
     # Hard-code the user_id to 'thelma_laryea'
-    table_name = os.environ.get('DYNAMODB_TABLE', 'ResumeTable')
+    table_name = os.environ.get('DYNAMODB_TABLE', 'ResumeTable-dev')
     user_id = 'thelma_laryea'
     
     # Add context to logs
