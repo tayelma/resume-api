@@ -8,6 +8,7 @@ terraform {
     }
   }
   backend "s3" {
+    profile = "Hilary"
     bucket = "states-tf-projects"
     key = "cloud-resume-api/terraform.tfstate"
     region = "us-east-1"
@@ -19,5 +20,6 @@ terraform {
 #AWS provider
 
 provider "aws" {
+  profile = "Hilary"
   region = var.region
 }
