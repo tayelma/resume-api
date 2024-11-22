@@ -341,7 +341,9 @@ After the workflow runs:
 
 ---
 
-Challenges and future improvements
-Faced some errors fetching data from the user id 'thelma_laryea'. For improvements, the code will be enhanced for scalability if the user id isn't hard coded.
+Challenges and Future Improvements:
+
+Faced some errors with the lambda code when fetching data from the user id  hence had to hard code the exact user id 'thelma_laryea'. 
+For improvements, the code should be enhanced for scalability and flexibility such that the user id isn't hard coded.
 
 
