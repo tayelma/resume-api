@@ -186,9 +186,9 @@ This Terraform configuration sets up an S3 bucket, zips a Lambda function code d
 output.tf:
 
 The output block is used in Terraform to display useful information (the API Gateway's endpoint URL as shown below) after the infrastructure is deployed.
-API Gateway endpoint: https://o0zc7ausgc.execute-api.us-east-1.amazonaws.com/dev/
+API Gateway endpoint: https://17dwrji6j7.execute-api.us-east-1.amazonaws.com/dev
 NB: attach the route key "/resume" to the above endpoint to display the resume json data in the browser. Hence the accessible link is: 
-https://o0zc7ausgc.execute-api.us-east-1.amazonaws.com/dev/resume
+https://17dwrji6j7.execute-api.us-east-1.amazonaws.com/dev/resume
 
 
 lambda.tf:
